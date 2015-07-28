@@ -1,4 +1,4 @@
-ï»¿//  Helix - A Genetic Programming Library
+//  Helix - A Genetic Programming Library
 //  Copyright (C) 2015 Edd Porter<helix@eddporter.com>
 // 
 //  This program is free software: you can redistribute it and/or modify
@@ -15,8 +15,12 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Reflection;
+using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Helix.Core")]
-[assembly:
-  AssemblyDescription(
-    "Core libraries for the Helix Genetic Programming Library.")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyProduct("Helix")]
+[assembly: AssemblyCopyright("Copyright © 2015 Edd Porter")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+[assembly: ComVisible(false)]
+[assembly: AssemblyVersion("0.0.1.0")]
