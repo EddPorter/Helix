@@ -81,6 +81,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Troschuetz.Random">
+      <HintPath>..\ThirdParty\Random\Troschuetz.Random.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalVersion.cs">
@@ -91,7 +94,15 @@
     <Compile Include="Expressions\ITerminal.cs" />
     <Compile Include="Expressions\ITree.cs" />
     <Compile Include="Expressions\Tree.cs" />
+    <Compile Include="Initialisers\AbstractInitialiserStrategy.cs" />
+    <Compile Include="Initialisers\FullInitialiserStrategy.cs" />
+    <Compile Include="Initialisers\GrowInitialiserStrategy.cs" />
+    <Compile Include="Initialisers\IInitialiserStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Diagrams\TreeInitialiserStrategies.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

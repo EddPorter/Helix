@@ -54,6 +54,10 @@
     <Compile Include="..\GlobalVersion.cs">
       <Link>Properties\GlobalVersion.cs</Link>
     </Compile>
+    <Compile Include="Initialisers\FakeFunction.cs" />
+    <Compile Include="Initialisers\FakeTerminal.cs" />
+    <Compile Include="Initialisers\GrowInitialiserStrategyTests.cs" />
+    <Compile Include="Initialisers\FullInitialiserStrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
