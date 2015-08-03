@@ -15,6 +15,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Diagnostics.Contracts;
+using Helix.Common;
 
 namespace Helix.Core.Expressions
 {
@@ -23,7 +24,7 @@ namespace Helix.Core.Expressions
   ///   recursive structured with each node formed from functions and terminals.
   /// </summary>
   [ContractClass(typeof (TreeContract))]
-  public interface ITree
+  public interface ITree : ICloneable<ITree>
   {
     /// <summary>The depth of the tree's deepest leaf.</summary>
     [Pure]
@@ -43,6 +44,8 @@ namespace Helix.Core.Expressions
   [ContractClassFor(typeof (ITree))]
   internal abstract class TreeContract : ITree
   {
+    public abstract ITree Clone();
+
     /// <summary>Depth cannot be negative. Leaf nodes can have depth 0.</summary>
     int ITree.Depth
     {

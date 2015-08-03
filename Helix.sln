@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix.Core.Tests", "Helix.Core.Tests\Helix.Core.Tests.csproj", "{BBFB464D-3471-4AF5-969F-9B246BF59D3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helix.Common", "Helix.Common\Helix.Common.csproj", "{77C6CE6A-0005-4729-A03A-57392A3630C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{BBFB464D-3471-4AF5-969F-9B246BF59D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBFB464D-3471-4AF5-969F-9B246BF59D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBFB464D-3471-4AF5-969F-9B246BF59D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77C6CE6A-0005-4729-A03A-57392A3630C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C6CE6A-0005-4729-A03A-57392A3630C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C6CE6A-0005-4729-A03A-57392A3630C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C6CE6A-0005-4729-A03A-57392A3630C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

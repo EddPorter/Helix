@@ -15,8 +15,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Helix.Core")]
 [assembly:
   AssemblyDescription(
     "Core libraries for the Helix Genetic Programming Library.")]
+[assembly: InternalsVisibleTo("Helix.Core.Tests")]

@@ -86,6 +86,24 @@ namespace Helix.Core.Expressions
     }
 
     private IList<ITree> Children { get; }
+
+    /// <summary>
+    ///   Creates a new <see cref="ITree" /> that is a copy of the current
+    ///   instance.
+    /// </summary>
+    /// <returns>A new <see cref="ITree" /> that is a copy of this instance.</returns>
+    public ITree Clone()
+    {
+      if (Children != null)
+      {
+        // Function clone.
+        return new Tree((IFunction) Node.Clone(),
+          Children.Select(child => child.Clone()).ToList());
+      }
+      // Terminal clone.
+      return new Tree((ITerminal) Node.Clone());
+    }
+
     /// <summary>The depth of the tree's deepest leaf.</summary>
     [Pure]
     public int Depth { get; }

@@ -54,6 +54,7 @@
     <Compile Include="..\GlobalVersion.cs">
       <Link>Properties\GlobalVersion.cs</Link>
     </Compile>
+    <Compile Include="Expressions\TreeTests.cs" />
     <Compile Include="Initialisers\FakeFunction.cs" />
     <Compile Include="Initialisers\FakeTerminal.cs" />
     <Compile Include="Initialisers\GrowInitialiserStrategyTests.cs" />
@@ -61,6 +62,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Helix.Common\Helix.Common.csproj">
+      <Project>{77C6CE6A-0005-4729-A03A-57392A3630C7}</Project>
+      <Name>Helix.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Helix.Core\Helix.Core.csproj">
       <Project>{ee16ea57-4a37-4cf6-9c0e-dc631ca447e1}</Project>
       <Name>Helix.Core</Name>

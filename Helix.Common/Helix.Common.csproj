@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE16EA57-4A37-4CF6-9C0E-DC631CA447E1}</ProjectGuid>
+    <ProjectGuid>{77C6CE6A-0005-4729-A03A-57392A3630C7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Helix.Core</RootNamespace>
-    <AssemblyName>Helix.Core</AssemblyName>
+    <RootNamespace>Helix.Common</RootNamespace>
+    <AssemblyName>Helix.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
@@ -62,7 +62,7 @@
     <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
     <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-    <CodeContractsReferenceAssembly>DoNotBuild</CodeContractsReferenceAssembly>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>3</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -78,36 +78,14 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Troschuetz.Random">
-      <HintPath>..\ThirdParty\Random\Troschuetz.Random.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\GlobalVersion.cs">
-      <Link>Properties\GlobalVersion.cs</Link>
-    </Compile>
-    <Compile Include="Expressions\IFunction.cs" />
-    <Compile Include="Expressions\IPrimitive.cs" />
-    <Compile Include="Expressions\ITerminal.cs" />
-    <Compile Include="Expressions\ITree.cs" />
-    <Compile Include="Expressions\Tree.cs" />
-    <Compile Include="Initialisers\AbstractInitialiserStrategy.cs" />
-    <Compile Include="Initialisers\FullInitialiserStrategy.cs" />
-    <Compile Include="Initialisers\GrowInitialiserStrategy.cs" />
-    <Compile Include="Initialisers\IInitialiserStrategy.cs" />
+    <Compile Include="ICloneable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Helix.Common\Helix.Common.csproj">
-      <Project>{77C6CE6A-0005-4729-A03A-57392A3630C7}</Project>
-      <Name>Helix.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Diagrams\TreeInitialiserStrategies.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

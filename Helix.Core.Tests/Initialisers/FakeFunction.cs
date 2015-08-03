@@ -20,6 +20,11 @@ namespace Helix.Core.Tests.Initialisers
 {
   internal class FakeFunction : IFunction
   {
+    public IPrimitive Clone()
+    {
+      return new FakeFunction();
+    }
+
     public int Arity { get; } = 2;
   }
 }

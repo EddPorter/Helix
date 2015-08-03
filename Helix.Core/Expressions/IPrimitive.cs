@@ -14,6 +14,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using Helix.Common;
+
 namespace Helix.Core.Expressions
 {
   /// <summary>
@@ -24,7 +27,7 @@ namespace Helix.Core.Expressions
   ///   The collection of allowed functions and terminals is known as the
   ///   Primitive Set.
   /// </remarks>
-  public interface IPrimitive
+  public interface IPrimitive : ICloneable<IPrimitive>
   {
   }
 }

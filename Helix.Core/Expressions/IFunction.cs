@@ -30,8 +30,10 @@ namespace Helix.Core.Expressions
   /// <summary>Specifies the code invariants for the <see cref="IFunction" />
   ///   interface and its derived types.</summary>
   [ContractClassFor(typeof (IFunction))]
-  public abstract class FunctionContract : IFunction
+  internal abstract class FunctionContract : IFunction
   {
+    public abstract IPrimitive Clone();
+
     /// <summary>
     ///   Functions must take at least one argument, otherwise they would be
     ///   terminals.
