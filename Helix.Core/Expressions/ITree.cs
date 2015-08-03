@@ -41,10 +41,10 @@ namespace Helix.Core.Expressions
   /// <summary>Specifies the code invariants for the <see cref="ITree" />
   ///   interface and its derived types.</summary>
   [ContractClassFor(typeof (ITree))]
-  public abstract class TreeContract : ITree
+  internal abstract class TreeContract : ITree
   {
     /// <summary>Depth cannot be negative. Leaf nodes can have depth 0.</summary>
-    public int Depth
+    int ITree.Depth
     {
       get
       {
@@ -54,7 +54,7 @@ namespace Helix.Core.Expressions
     }
 
     /// <summary>Every tree must have a valid node element.</summary>
-    public IPrimitive Node
+    IPrimitive ITree.Node
     {
       get
       {
@@ -64,7 +64,7 @@ namespace Helix.Core.Expressions
     }
 
     /// <summary>Every tree must have at least one element.</summary>
-    public int Size
+    int ITree.Size
     {
       get
       {

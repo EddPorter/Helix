@@ -40,6 +40,7 @@ namespace Helix.Core.Expressions
       Contract.Requires<ArgumentNullException>(terminal != null,
         "A valid terminal must be provided.");
       Contract.Ensures(Node == Contract.OldValue(terminal));
+      Contract.Ensures(Children == null);
       Contract.Ensures(Depth == 0);
       Contract.Ensures(Size == 1);
 
@@ -70,6 +71,7 @@ namespace Helix.Core.Expressions
       Contract.Requires<ArgumentException>(children.Count == function.Arity,
         "The number of child trees must equal the arity of the function.");
       Contract.Ensures(Node == Contract.OldValue(function));
+      Contract.Ensures(Children == Contract.OldValue(children));
       Contract.Ensures(Depth ==
                        Contract.OldValue(children).Max(tree => tree.Depth) + 1);
       Contract.Ensures(Size ==
@@ -80,8 +82,10 @@ namespace Helix.Core.Expressions
       Node = function;
       Depth = children.Max(tree => tree.Depth) + 1;
       Size = children.Sum(tree => tree.Size) + 1;
+      Children = children;
     }
 
+    private IList<ITree> Children { get; }
     /// <summary>The depth of the tree's deepest leaf.</summary>
     [Pure]
     public int Depth { get; }
@@ -93,5 +97,17 @@ namespace Helix.Core.Expressions
     /// <summary>The number of nodes in the tree.</summary>
     [Pure]
     public int Size { get; }
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
+    {
+      Contract.Invariant(Depth >= 0);
+      Contract.Invariant(Size >= 1);
+      Contract.Invariant(Node is ITerminal || Node is IFunction);
+      Contract.Invariant((Node is ITerminal && Children == null) ||
+                         (Node is IFunction && Children != null));
+      Contract.Invariant(!(Node is IFunction) ||
+                         Children.Count == ((IFunction) Node).Arity);
+    }
   }
 }
