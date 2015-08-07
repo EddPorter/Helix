@@ -16,7 +16,10 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Helix.Core.Expressions;
+using IPopulation =
+  System.Collections.Generic.ICollection<Helix.Core.Expressions.Tree>;
 
 namespace Helix.Core.Selection
 {
@@ -33,6 +36,8 @@ namespace Helix.Core.Selection
   [ContractClassFor(typeof (ISelector))]
   internal abstract class SelectorContract : ISelector
   {
+    #region ISelector Members
+
     /// <summary>The returned tree is a member of the original population.</summary>
     ITree ISelector.Select(IPopulation population)
     {
@@ -47,5 +52,7 @@ namespace Helix.Core.Selection
 
       return default(ITree);
     }
+
+    #endregion
   }
 }

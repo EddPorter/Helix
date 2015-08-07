@@ -26,7 +26,7 @@ namespace Helix.Core.Expressions
   ///   recursive structured with each node formed from functions and terminals.
   /// </summary>
   /// <remarks>This is an immutable structure.</remarks>
-  internal class Tree : ITree
+  public class Tree : ITree, IEquatable<Tree>
   {
     /// <summary>
     ///   Creates a new tree with an <see cref="ITerminal" /> as the root node,
@@ -71,7 +71,7 @@ namespace Helix.Core.Expressions
       Contract.Requires<ArgumentException>(children.Count == function.Arity,
         "The number of child trees must equal the arity of the function.");
       Contract.Ensures(Node == Contract.OldValue(function));
-      Contract.Ensures(Children == Contract.OldValue(children));
+      Contract.Ensures(ReferenceEquals(Children, Contract.OldValue(children)));
       Contract.Ensures(Depth ==
                        Contract.OldValue(children).Max(tree => tree.Depth) + 1);
       Contract.Ensures(Size ==
@@ -86,6 +86,62 @@ namespace Helix.Core.Expressions
     }
 
     private IList<ITree> Children { get; }
+
+    /// <summary>The depth of the tree's deepest leaf.</summary>
+    [Pure]
+    public int Depth { get; }
+
+    /// <summary>The primitive element represented by the root node of this tree.</summary>
+    [Pure]
+    public IPrimitive Node { get; }
+
+    /// <summary>The number of nodes in the tree.</summary>
+    [Pure]
+    public int Size { get; }
+
+    /// <summary>Determines whether the specified object is equal to the current
+    ///   <see cref="Tree" />. A tree is defined by its  <see cref="Node" /> and its
+    ///   <see cref="Children" />
+    /// </summary>
+    /// <returns>
+    ///   <c>true</c> if the specified object is equal to the current
+    ///   <see cref="Tree" />; otherwise, <c>false</c>.
+    /// </returns>
+    /// <param name="obj">The object to compare with the current <see cref="Tree" />.</param>
+    public override bool Equals(object obj)
+    {
+      if (ReferenceEquals(null, obj))
+        return false;
+      if (ReferenceEquals(this, obj))
+        return true;
+      return obj.GetType() == GetType() && Equals((Tree) obj);
+    }
+
+    /// <summary>Returns the hash for this tree. A tree is defined by its
+    ///   <see cref="Node" /> and its <see cref="Children" />.</summary>
+    /// <returns>A hash code for the current object.</returns>
+    public override int GetHashCode()
+    {
+      unchecked
+      {
+        return ((Children?.GetHashCode() ?? 0)*397) ^ Node.GetHashCode();
+      }
+    }
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
+    {
+      Contract.Invariant(Depth >= 0);
+      Contract.Invariant(Size >= 1);
+      Contract.Invariant(Node != null);
+      Contract.Invariant(Node is ITerminal || Node is IFunction);
+      Contract.Invariant((Node is ITerminal && Children == null) ||
+                         (Node is IFunction && Children != null));
+      Contract.Invariant(!(Node is IFunction) ||
+                         Children.Count == ((IFunction) Node).Arity);
+    }
+
+    #region ICloneable<ITree> Members
 
     /// <summary>
     ///   Creates a new <see cref="ITree" /> that is a copy of the current
@@ -104,28 +160,19 @@ namespace Helix.Core.Expressions
       return new Tree((ITerminal) Node.Clone());
     }
 
-    /// <summary>The depth of the tree's deepest leaf.</summary>
-    [Pure]
-    public int Depth { get; }
+    #endregion
 
-    /// <summary>The primitive element represented by the root node of this tree.</summary>
-    [Pure]
-    public IPrimitive Node { get; }
+    #region IEquatable<Tree> Members
 
-    /// <summary>The number of nodes in the tree.</summary>
-    [Pure]
-    public int Size { get; }
-
-    [ContractInvariantMethod]
-    private void ObjectInvariant()
+    public bool Equals(Tree other)
     {
-      Contract.Invariant(Depth >= 0);
-      Contract.Invariant(Size >= 1);
-      Contract.Invariant(Node is ITerminal || Node is IFunction);
-      Contract.Invariant((Node is ITerminal && Children == null) ||
-                         (Node is IFunction && Children != null));
-      Contract.Invariant(!(Node is IFunction) ||
-                         Children.Count == ((IFunction) Node).Arity);
+      if (ReferenceEquals(null, other))
+        return false;
+      if (ReferenceEquals(this, other))
+        return true;
+      return Equals(Children, other.Children) && Equals(Node, other.Node);
     }
+
+    #endregion
   }
 }

@@ -82,8 +82,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Troschuetz.Random">
+      <HintPath>..\ThirdParty\Random\Troschuetz.Random.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DistributionExtensions.cs" />
     <Compile Include="ICloneable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

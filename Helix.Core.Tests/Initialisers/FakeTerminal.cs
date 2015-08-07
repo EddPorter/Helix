@@ -20,9 +20,24 @@ namespace Helix.Core.Tests.Initialisers
 {
   internal class FakeTerminal : ITerminal
   {
+    public FakeTerminal()
+    {
+    }
+
+    public FakeTerminal(int id)
+    {
+      Id = id;
+    }
+
+    public int Id { get; }
+
+    #region ICloneable<IPrimitive> Members
+
     public IPrimitive Clone()
     {
-      return new FakeTerminal();
+      return new FakeTerminal(Id);
     }
+
+    #endregion
   }
 }

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using Helix.Common;
 using Helix.Core.Expressions;
 using Troschuetz.Random;
 
@@ -26,34 +27,22 @@ namespace Helix.Core.Initialisers
   /// <summary>Strategy for initialising a population.</summary>
   public abstract class AbstractInitialiserStrategy : IInitialiserStrategy
   {
-    /// <summary>
-    ///   A uniformly distributed pseudo-random number generator. The built in
-    ///   <see cref="System.Random" /> class is flawed and will probably never be
-    ///   fixed.
-    ///   https://connect.microsoft.com/VisualStudio/feedback/details/634761/system-random-serious-bug
-    ///   http://stackoverflow.com/a/6842191/445517
-    ///   http://blogs.msdn.com/b/ericlippert/archive/2012/02/21/generating-random-non-uniform-data-in-c.aspx
-    /// </summary>
-    private readonly ContinuousUniformDistribution _uniformDistribution =
-      new ContinuousUniformDistribution(new ALFGenerator());
+    /// <summary>A uniformly distributed pseudo-random number generator.</summary>
+    private readonly ContinuousUniformDistribution _uniformDistribution;
 
-    /// <summary>Creates a new expression tree from scratch.</summary>
-    /// <param name="functionCollection">
-    ///   The collection of function types available for
-    ///   use. Each element must derive from <see cref="IFunction" />.
+    /// <summary>Called when creating a new initialiser strategy.</summary>
+    /// <param name="uniformDistribution">
+    ///   A random uniform distribution to be used by
+    ///   the class. Can be <c>null</c> in which case a default distribution is
+    ///   created.
     /// </param>
-    /// <param name="terminalCollection">
-    ///   The collection of terminals available for use.
-    ///   Each element must derive from <see cref="ITerminal" />.
-    /// </param>
-    /// <param name="maxDepth">
-    ///   The maximum allowed depth for expressions. Must be
-    ///   non-negative.
-    /// </param>
-    /// <returns>The newly generated expression tree.</returns>
-    public abstract ITree GenerateRandomExpressionTree(
-      ICollection<Type> functionCollection, ICollection<Type> terminalCollection,
-      int maxDepth);
+    protected AbstractInitialiserStrategy(
+      ContinuousUniformDistribution uniformDistribution = null)
+    {
+      _uniformDistribution = uniformDistribution ??
+                             new ContinuousUniformDistribution(
+                               new ALFGenerator());
+    }
 
     /// <summary>Picks a uniformaly random element from a collection of primitives.</summary>
     /// <param name="primitiveCollection">The collection of primitives to pick from.</param>
@@ -91,25 +80,8 @@ namespace Helix.Core.Initialisers
     /// <returns>A number between 0 and 1.</returns>
     protected double GetRandomSample()
     {
-      ConfigureDistribution(0.0, 1.0);
+      _uniformDistribution.ConfigureDistribution(0.0, 1.0);
       return _uniformDistribution.NextDouble();
-    }
-
-    /// <summary>
-    ///   Sets up the random number distribution for the next call to get a
-    ///   value.
-    /// </summary>
-    /// <param name="min">The smallest value that can be returned.</param>
-    /// <param name="exclusiveMax">
-    ///   The upper bound of the value that can be returned.
-    ///   This value itself is never returned.
-    /// </param>
-    private void ConfigureDistribution(double min, double exclusiveMax)
-    {
-      // See http://www.codeproject.com/Articles/15102/NET-random-number-generators-and-distributions
-      // for details on the distribution configurations.
-      _uniformDistribution.Alpha = min;
-      _uniformDistribution.Beta = exclusiveMax;
     }
 
     /// <summary>
@@ -135,7 +107,7 @@ namespace Helix.Core.Initialisers
 
       #endregion
 
-      ConfigureDistribution(min, exclusiveMax);
+      _uniformDistribution.ConfigureDistribution(min, exclusiveMax);
       var randomValueInRange = _uniformDistribution.NextDouble();
 
       // The random value provider library doesn't provide post-conditions, so
@@ -146,5 +118,27 @@ namespace Helix.Core.Initialisers
 
       return (int) randomValueInRange;
     }
+
+    #region IInitialiserStrategy Members
+
+    /// <summary>Creates a new expression tree from scratch.</summary>
+    /// <param name="functionCollection">
+    ///   The collection of function types available for
+    ///   use. Each element must derive from <see cref="IFunction" />.
+    /// </param>
+    /// <param name="terminalCollection">
+    ///   The collection of terminals available for use.
+    ///   Each element must derive from <see cref="ITerminal" />.
+    /// </param>
+    /// <param name="maxDepth">
+    ///   The maximum allowed depth for expressions. Must be
+    ///   non-negative.
+    /// </param>
+    /// <returns>The newly generated expression tree.</returns>
+    public abstract ITree GenerateRandomExpressionTree(
+      ICollection<Type> functionCollection, ICollection<Type> terminalCollection,
+      int maxDepth);
+
+    #endregion
   }
 }
