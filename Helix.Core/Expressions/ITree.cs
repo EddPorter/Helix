@@ -14,6 +14,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Helix.Common;
 
@@ -37,6 +38,12 @@ namespace Helix.Core.Expressions
     /// <summary>The number of nodes in the tree.</summary>
     [Pure]
     int Size { get; }
+
+    /// <summary>
+    ///   The branches of the tree evaluating to expressions to be provided to a
+    ///   function, or null if this is a leaf of the tree.
+    /// </summary>
+    IList<ITree> Children { get; }
   }
 
   /// <summary>Specifies the code invariants for the <see cref="ITree" />
@@ -44,8 +51,6 @@ namespace Helix.Core.Expressions
   [ContractClassFor(typeof (ITree))]
   internal abstract class TreeContract : ITree
   {
-    public abstract ITree Clone();
-
     /// <summary>Depth cannot be negative. Leaf nodes can have depth 0.</summary>
     int ITree.Depth
     {
@@ -67,13 +72,28 @@ namespace Helix.Core.Expressions
     }
 
     /// <summary>Every tree must have at least one element.</summary>
-    int ITree.Size
+    int ITree.Size => default(int);
+
+    IList<ITree> ITree.Children => default(IList<ITree>);
+
+    [ContractInvariantMethod]
+    private void ObjectInvariant()
     {
-      get
-      {
-        Contract.Ensures(Contract.Result<int>() >= 1);
-        return 1;
-      }
+      var tree = (ITree) this;
+      Contract.Invariant(tree.Depth >= 0);
+      Contract.Invariant(tree.Size >= 1);
+      Contract.Invariant(tree.Node != null);
+      Contract.Invariant(tree.Node is ITerminal || tree.Node is IFunction);
+      Contract.Invariant((tree.Node is ITerminal && tree.Children == null) ||
+                         (tree.Node is IFunction && tree.Children != null));
+      Contract.Invariant(!(tree.Node is IFunction) ||
+                         tree.Children.Count == ((IFunction) tree.Node).Arity);
     }
+
+    #region ICloneable<ITree> Members
+
+    public abstract ITree Clone();
+
+    #endregion
   }
 }

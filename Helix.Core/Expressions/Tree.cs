@@ -85,7 +85,28 @@ namespace Helix.Core.Expressions
       Children = children;
     }
 
-    private IList<ITree> Children { get; }
+    /// <summary>
+    ///   Creates a new tree from a hybrid specimen whose Size and Depth
+    ///   properties might be inconsistent.
+    /// </summary>
+    /// <param name="hybridTree">The hybrid tree to build from.</param>
+    internal Tree(ITree hybridTree)
+    {
+      if (hybridTree.Node is ITerminal)
+      {
+        Node = hybridTree.Node.Clone();
+        Depth = 0;
+        Size = 1;
+      }
+      else
+      {
+        Node = hybridTree.Node.Clone();
+        Children =
+          hybridTree.Children.Select(child => (ITree) new Tree(child)).ToList();
+        Depth = Children.Max(tree => tree.Depth) + 1;
+        Size = Children.Sum(tree => tree.Size) + 1;
+      }
+    }
 
     /// <summary>The depth of the tree's deepest leaf.</summary>
     [Pure]
@@ -98,6 +119,12 @@ namespace Helix.Core.Expressions
     /// <summary>The number of nodes in the tree.</summary>
     [Pure]
     public int Size { get; }
+
+    /// <summary>
+    ///   The branches of the tree evaluating to expressions to be provided to a
+    ///   function, or null if this is a leaf of the tree.
+    /// </summary>
+    public IList<ITree> Children { get; }
 
     /// <summary>Determines whether the specified object is equal to the current
     ///   <see cref="Tree" />. A tree is defined by its  <see cref="Node" /> and its
@@ -126,19 +153,6 @@ namespace Helix.Core.Expressions
       {
         return ((Children?.GetHashCode() ?? 0)*397) ^ Node.GetHashCode();
       }
-    }
-
-    [ContractInvariantMethod]
-    private void ObjectInvariant()
-    {
-      Contract.Invariant(Depth >= 0);
-      Contract.Invariant(Size >= 1);
-      Contract.Invariant(Node != null);
-      Contract.Invariant(Node is ITerminal || Node is IFunction);
-      Contract.Invariant((Node is ITerminal && Children == null) ||
-                         (Node is IFunction && Children != null));
-      Contract.Invariant(!(Node is IFunction) ||
-                         Children.Count == ((IFunction) Node).Arity);
     }
 
     #region ICloneable<ITree> Members
