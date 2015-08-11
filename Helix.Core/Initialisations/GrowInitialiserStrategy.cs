@@ -1,4 +1,4 @@
-//  Helix - A Genetic Programming Library
+﻿//  Helix - A Genetic Programming Library
 //  Copyright (C) 2015 Edd Porter<helix@eddporter.com>
 // 
 //  This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,11 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Helix.Core.Expressions;
 
-namespace Helix.Core.Initialisers
+namespace Helix.Core.Initialisations
 {
   /// <summary>
-  ///   Initialises an expression tree such that every path to a leaf has the
-  ///   same depth.
+  ///   Initialises an expression tree by randomly selecting primitive
+  ///   elements until the tree reaches a specified depth.
   /// </summary>
   /// <remarks>
   ///   Algorithm taken from R. Poli, W. B. Langdon, and N. F. McPhee. A field
@@ -31,12 +31,12 @@ namespace Helix.Core.Initialisers
   ///   available at http://www.gp-field-guide.org.uk, 2008. (With contributions by
   ///   J. R. Koza). pg14.
   /// </remarks>
-  public class FullInitialiserStrategy : AbstractInitialiserStrategy
+  public class GrowInitialiserStrategy : AbstractInitialiserStrategy
   {
     /// <summary>
-    ///   Creates a new expression tree from scratch. Each element at depths
-    ///   less than the maximum depth is picked from the collection of functions
-    ///   provided. At the maximum depth, terminals are chosen.
+    ///   Creates a new expression tree from scratch. Each element is randomly
+    ///   picked from the collection of primitives provided until a terminal is
+    ///   reached. At the maximum depth, only terminals are chosen.
     /// </summary>
     /// <param name="functionCollection">
     ///   The collection of function types available for
@@ -65,9 +65,6 @@ namespace Helix.Core.Initialisers
           type => typeof (IFunction).IsAssignableFrom(type)),
         "Elements in the collection of functions must derive from the IFunction interface.");
 
-      Contract.Requires<ArgumentException>(functionCollection.Count > 0,
-        "At least one function type must be provided.");
-
       Contract.Requires<ArgumentNullException>(terminalCollection != null,
         "A colleciton of terminals must be provided.");
 
@@ -83,25 +80,24 @@ namespace Helix.Core.Initialisers
 
       Contract.Ensures(Contract.Result<ITree>() != null);
 
-      Contract.Ensures(Contract.Result<ITree>().Size ==
-                       (2 << Contract.OldValue(maxDepth)) - 1);
-
       // TODO: Ensure that each leaf is an ITerminal.
 
       // TODO: Ensure that each node is an IFunction.
 
-      // TODO: Ensure that only leaves are terminals, i.e. every root has maximum depth.
-
       #endregion
 
-      if (ShouldChooseTerminal(maxDepth))
+      var functionCount = functionCollection.Count;
+      var terminalCount = terminalCollection.Count;
+      if (functionCount == 0 ||
+          ShouldChooseTerminal(maxDepth, terminalCount,
+            terminalCount + functionCount))
       {
         return new Tree((ITerminal) ChooseRandomPrimitive(terminalCollection));
       }
 
       var function = (IFunction) ChooseRandomPrimitive(functionCollection);
       var children = new ITree[function.Arity];
-      Contract.Assume(((ICollection<ITree>)children).Count == function.Arity);
+      Contract.Assume(((ICollection<ITree>) children).Count == function.Arity);
       for (var i = 0; i < function.Arity; ++i)
       {
         children[i] = GenerateRandomExpressionTree(functionCollection,
@@ -115,10 +111,16 @@ namespace Helix.Core.Initialisers
     ///   next.
     /// </summary>
     /// <param name="maxDepth">The maximum depth of the expression tree being created.</param>
+    /// <param name="terminalCount">The number of terminal primitives available.</param>
+    /// <param name="primitiveCount">The total number of primitives available.</param>
     /// <returns>Whether a terminal should be chosen next.</returns>
-    private static bool ShouldChooseTerminal(int maxDepth)
+    private bool ShouldChooseTerminal(int maxDepth, int terminalCount,
+      int primitiveCount)
     {
-      return maxDepth == 0;
+      var randomPrimitive = GetRandomSample();
+
+      return maxDepth == 0 ||
+             randomPrimitive < (double) terminalCount/primitiveCount;
     }
   }
 }

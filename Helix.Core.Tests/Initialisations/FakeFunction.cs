@@ -16,7 +16,7 @@
 
 using Helix.Core.Expressions;
 
-namespace Helix.Core.Tests.Initialisers
+namespace Helix.Core.Tests.Initialisations
 {
   internal class FakeFunction : IFunction
   {

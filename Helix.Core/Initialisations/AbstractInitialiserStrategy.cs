@@ -22,7 +22,7 @@ using Helix.Common;
 using Helix.Core.Expressions;
 using Troschuetz.Random;
 
-namespace Helix.Core.Initialisers
+namespace Helix.Core.Initialisations
 {
   /// <summary>Strategy for initialising a population.</summary>
   public abstract class AbstractInitialiserStrategy : IInitialiserStrategy

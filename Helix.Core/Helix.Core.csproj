@@ -94,15 +94,15 @@
     <Compile Include="Expressions\ITerminal.cs" />
     <Compile Include="Expressions\ITree.cs" />
     <Compile Include="Expressions\Tree.cs" />
-    <Compile Include="Initialisers\AbstractInitialiserStrategy.cs" />
-    <Compile Include="Initialisers\FullInitialiserStrategy.cs" />
-    <Compile Include="Initialisers\GrowInitialiserStrategy.cs" />
-    <Compile Include="Initialisers\IInitialiserStrategy.cs" />
+    <Compile Include="Initialisations\AbstractInitialiserStrategy.cs" />
+    <Compile Include="Initialisations\FullInitialiserStrategy.cs" />
+    <Compile Include="Initialisations\GrowInitialiserStrategy.cs" />
+    <Compile Include="Initialisations\IInitialiserStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Recombiners\IRecombiner.cs" />
-    <Compile Include="Recombiners\UniformSubtreeCrossover.cs" />
-    <Compile Include="Selection\ISelector.cs" />
-    <Compile Include="Selection\TournamentSelector.cs" />
+    <Compile Include="Recombinations\IRecombiner.cs" />
+    <Compile Include="Recombinations\UniformSubtreeCrossover.cs" />
+    <Compile Include="Selections\ISelector.cs" />
+    <Compile Include="Selections\TournamentSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helix.Common\Helix.Common.csproj">

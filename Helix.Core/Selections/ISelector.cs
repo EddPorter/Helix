@@ -21,7 +21,7 @@ using Helix.Core.Expressions;
 using IPopulation =
   System.Collections.Generic.ICollection<Helix.Core.Expressions.Tree>;
 
-namespace Helix.Core.Selection
+namespace Helix.Core.Selections
 {
   /// <summary>Provides a means of selecting individuals from a population.</summary>
   [ContractClass(typeof (SelectorContract))]

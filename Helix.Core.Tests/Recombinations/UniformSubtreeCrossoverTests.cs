@@ -15,11 +15,11 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using Helix.Core.Expressions;
-using Helix.Core.Recombiners;
-using Helix.Core.Tests.Initialisers;
+using Helix.Core.Recombinations;
+using Helix.Core.Tests.Initialisations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Helix.Core.Tests.Recombination
+namespace Helix.Core.Tests.Recombinations
 {
   [TestClass]
   public class UniformSubtreeCrossoverTests

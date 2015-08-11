@@ -20,7 +20,7 @@ using Helix.Common;
 using Helix.Core.Expressions;
 using Troschuetz.Random;
 
-namespace Helix.Core.Recombiners
+namespace Helix.Core.Recombinations
 {
   /// <summary>
   ///   A uniform subtree crossover recombiner. Two uniformly random points on

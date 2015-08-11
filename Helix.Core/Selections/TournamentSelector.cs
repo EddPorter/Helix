@@ -21,7 +21,7 @@ using Helix.Common;
 using Helix.Core.Expressions;
 using Troschuetz.Random;
 
-namespace Helix.Core.Selection
+namespace Helix.Core.Selections
 {
   public class TournamentSelector : ISelector
   {

@@ -18,7 +18,7 @@ using System;
 using System.Diagnostics.Contracts;
 using Helix.Core.Expressions;
 
-namespace Helix.Core.Recombiners
+namespace Helix.Core.Recombinations
 {
   /// <summary>
   ///   Takes two individuals and combines them to create a third individual:

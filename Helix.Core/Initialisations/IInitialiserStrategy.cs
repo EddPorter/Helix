@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using Helix.Core.Expressions;
 
-namespace Helix.Core.Initialisers
+namespace Helix.Core.Initialisations
 {
   internal interface IInitialiserStrategy
   {

@@ -17,11 +17,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Helix.Core.Expressions;
-using Helix.Core.Selection;
-using Helix.Core.Tests.Initialisers;
+using Helix.Core.Selections;
+using Helix.Core.Tests.Initialisations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Helix.Core.Tests.Selection
+namespace Helix.Core.Tests.Selections
 {
   [TestClass]
   public class TournamentSelectorTests

@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 using Helix.Core.Expressions;
-using Helix.Core.Tests.Initialisers;
+using Helix.Core.Tests.Initialisations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Helix.Core.Tests.Expressions

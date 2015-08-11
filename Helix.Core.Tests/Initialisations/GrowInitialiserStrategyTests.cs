@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using Helix.Core.Expressions;
-using Helix.Core.Initialisers;
+using Helix.Core.Initialisations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Helix.Core.Tests.Initialisers
+namespace Helix.Core.Tests.Initialisations
 {
   [TestClass]
   public class GrowInitialiserStrategyTests
