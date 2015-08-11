@@ -92,6 +92,8 @@ namespace Helix.Core.Expressions
     /// <param name="hybridTree">The hybrid tree to build from.</param>
     internal Tree(ITree hybridTree)
     {
+      Contract.Requires<ArgumentNullException>(hybridTree != null);
+
       if (hybridTree.Node is ITerminal)
       {
         Node = hybridTree.Node.Clone();

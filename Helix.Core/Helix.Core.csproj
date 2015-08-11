@@ -94,10 +94,14 @@
     <Compile Include="Expressions\ITerminal.cs" />
     <Compile Include="Expressions\ITree.cs" />
     <Compile Include="Expressions\Tree.cs" />
+    <Compile Include="Expressions\TreeAndParent.cs" />
+    <Compile Include="Expressions\TreeExtensions.cs" />
     <Compile Include="Initialisations\AbstractInitialiserStrategy.cs" />
     <Compile Include="Initialisations\FullInitialiserStrategy.cs" />
     <Compile Include="Initialisations\GrowInitialiserStrategy.cs" />
     <Compile Include="Initialisations\IInitialiserStrategy.cs" />
+    <Compile Include="Mutations\IMutation.cs" />
+    <Compile Include="Mutations\SubtreeMutation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recombinations\IRecombiner.cs" />
     <Compile Include="Recombinations\UniformSubtreeCrossover.cs" />

@@ -122,22 +122,12 @@ namespace Helix.Core.Initialisations
     #region IInitialiserStrategy Members
 
     /// <summary>Creates a new expression tree from scratch.</summary>
-    /// <param name="functionCollection">
-    ///   The collection of function types available for
-    ///   use. Each element must derive from <see cref="IFunction" />.
-    /// </param>
-    /// <param name="terminalCollection">
-    ///   The collection of terminals available for use.
-    ///   Each element must derive from <see cref="ITerminal" />.
-    /// </param>
     /// <param name="maxDepth">
     ///   The maximum allowed depth for expressions. Must be
     ///   non-negative.
     /// </param>
     /// <returns>The newly generated expression tree.</returns>
-    public abstract ITree GenerateRandomExpressionTree(
-      ICollection<Type> functionCollection, ICollection<Type> terminalCollection,
-      int maxDepth);
+    public abstract ITree GenerateRandomExpressionTree(int maxDepth);
 
     #endregion
   }

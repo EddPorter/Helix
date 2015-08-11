@@ -33,11 +33,10 @@ namespace Helix.Core.Initialisations
   /// </remarks>
   public class FullInitialiserStrategy : AbstractInitialiserStrategy
   {
-    /// <summary>
-    ///   Creates a new expression tree from scratch. Each element at depths
-    ///   less than the maximum depth is picked from the collection of functions
-    ///   provided. At the maximum depth, terminals are chosen.
-    /// </summary>
+    private readonly ICollection<Type> _functionCollection;
+    private readonly ICollection<Type> _terminalCollection;
+
+    /// <summary>Creates a new initialiser strategy using the full method.</summary>
     /// <param name="functionCollection">
     ///   The collection of function types available for
     ///   use. Each element must derive from <see cref="IFunction" />.
@@ -46,16 +45,10 @@ namespace Helix.Core.Initialisations
     ///   The collection of terminals available for use.
     ///   Each element must derive from <see cref="ITerminal" />.
     /// </param>
-    /// <param name="maxDepth">
-    ///   The maximum allowed depth for expressions. Must be
-    ///   non-negative.
-    /// </param>
-    /// <returns>The newly generated expression tree.</returns>
-    public override ITree GenerateRandomExpressionTree(
-      ICollection<Type> functionCollection, ICollection<Type> terminalCollection,
-      int maxDepth)
+    public FullInitialiserStrategy(ICollection<Type> functionCollection,
+      ICollection<Type> terminalCollection)
     {
-      #region Contracts
+      #region Code Contracts
 
       Contract.Requires<ArgumentNullException>(functionCollection != null,
         "A collection of functions must be provided.");
@@ -79,9 +72,25 @@ namespace Helix.Core.Initialisations
       Contract.Requires<ArgumentException>(terminalCollection.Count > 0,
         "At least one terminal type must be provided.");
 
-      Contract.Requires<ArgumentOutOfRangeException>(maxDepth >= 0);
+      #endregion
 
-      Contract.Ensures(Contract.Result<ITree>() != null);
+      _functionCollection = functionCollection;
+      _terminalCollection = terminalCollection;
+    }
+
+    /// <summary>
+    ///   Creates a new expression tree from scratch. Each element at depths
+    ///   less than the maximum depth is picked from the collection of functions
+    ///   provided. At the maximum depth, terminals are chosen.
+    /// </summary>
+    /// <param name="maxDepth">
+    ///   The maximum allowed depth for expressions. Must be
+    ///   non-negative.
+    /// </param>
+    /// <returns>The newly generated expression tree.</returns>
+    public override ITree GenerateRandomExpressionTree(int maxDepth)
+    {
+      #region Contracts
 
       Contract.Ensures(Contract.Result<ITree>().Size ==
                        (2 << Contract.OldValue(maxDepth)) - 1);
@@ -96,16 +105,15 @@ namespace Helix.Core.Initialisations
 
       if (ShouldChooseTerminal(maxDepth))
       {
-        return new Tree((ITerminal) ChooseRandomPrimitive(terminalCollection));
+        return new Tree((ITerminal) ChooseRandomPrimitive(_terminalCollection));
       }
 
-      var function = (IFunction) ChooseRandomPrimitive(functionCollection);
+      var function = (IFunction) ChooseRandomPrimitive(_functionCollection);
       var children = new ITree[function.Arity];
-      Contract.Assume(((ICollection<ITree>)children).Count == function.Arity);
+      Contract.Assume(((ICollection<ITree>) children).Count == function.Arity);
       for (var i = 0; i < function.Arity; ++i)
       {
-        children[i] = GenerateRandomExpressionTree(functionCollection,
-          terminalCollection, maxDepth - 1);
+        children[i] = GenerateRandomExpressionTree(maxDepth - 1);
       }
       return new Tree(function, children);
     }

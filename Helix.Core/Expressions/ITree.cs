@@ -57,7 +57,7 @@ namespace Helix.Core.Expressions
       get
       {
         Contract.Ensures(Contract.Result<int>() >= 0);
-        return 0;
+        return default(int);
       }
     }
 
@@ -72,7 +72,14 @@ namespace Helix.Core.Expressions
     }
 
     /// <summary>Every tree must have at least one element.</summary>
-    int ITree.Size => default(int);
+    int ITree.Size
+    {
+      get
+      {
+        Contract.Ensures(Contract.Result<int>() >= 1);
+        return default(int);
+      }
+    }
 
     IList<ITree> ITree.Children => default(IList<ITree>);
 

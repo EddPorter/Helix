@@ -14,9 +14,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using Helix.Common;
 using Helix.Core.Expressions;
 using Troschuetz.Random;
 
@@ -51,39 +48,6 @@ namespace Helix.Core.Recombinations
                                new ALFGenerator());
     }
 
-    private TreeAndParent PickPointInTree(ITree tree)
-    {
-      _uniformDistribution.ConfigureDistribution(0, tree.Size);
-      var nodeIndex = (int) _uniformDistribution.NextDouble();
-
-      return BreadthFirstSearch(tree, null, nodeIndex);
-    }
-
-    internal static TreeAndParent BreadthFirstSearch(ITree tree, ITree parent,
-      int nodeIndex)
-    {
-      Contract.Requires(tree != null);
-      Contract.Requires(0 <= nodeIndex && nodeIndex < tree.Size);
-
-      var queue = new Queue<TreeAndParent>();
-
-      queue.Enqueue(new TreeAndParent(tree, parent));
-      while (nodeIndex > 0)
-      {
-        tree = queue.Dequeue().Tree;
-        if (tree.Node is IFunction)
-        {
-          foreach (var child in tree.Children)
-          {
-            queue.Enqueue(new TreeAndParent(child, tree));
-          }
-        }
-        --nodeIndex;
-      }
-
-      return queue.Dequeue();
-    }
-
     #region IRecombiner Members
 
     /// <summary>
@@ -95,9 +59,12 @@ namespace Helix.Core.Recombinations
     /// <returns>A third individual with elements of the two parents.</returns>
     public ITree Recombine(ITree first, ITree second)
     {
+      // TODO: This code matches that used in
+      // HeadlessChickenCrossoverMutation.Mutate. Need to refactor into helper.
+
       var child = first.Clone();
-      var firstPoint = PickPointInTree(child);
-      var secondPoint = PickPointInTree(second);
+      var firstPoint = child.PickPointInTree(_uniformDistribution);
+      var secondPoint = second.PickPointInTree(_uniformDistribution);
 
       var parent = firstPoint.Parent;
       if (parent == null)
@@ -114,17 +81,5 @@ namespace Helix.Core.Recombinations
     }
 
     #endregion
-
-    internal class TreeAndParent
-    {
-      public TreeAndParent(ITree tree, ITree parent)
-      {
-        Tree = tree;
-        Parent = parent;
-      }
-
-      public ITree Tree { get; }
-      public ITree Parent { get; }
-    }
   }
 }

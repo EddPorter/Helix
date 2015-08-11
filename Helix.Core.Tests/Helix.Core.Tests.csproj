@@ -65,7 +65,9 @@
     <Compile Include="Initialisations\FakeTerminal.cs" />
     <Compile Include="Initialisations\FullInitialiserStrategyTests.cs" />
     <Compile Include="Initialisations\GrowInitialiserStrategyTests.cs" />
+    <Compile Include="Mutations\HeadlessChickenCrossoverMutationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recombinations\TreeExtensionsTests.cs" />
     <Compile Include="Recombinations\UniformSubtreeCrossoverTests.cs" />
     <Compile Include="Selections\TournamentSelectorTests.cs" />
   </ItemGroup>

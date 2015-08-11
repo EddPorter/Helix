@@ -18,31 +18,27 @@ using System;
 using System.Diagnostics.Contracts;
 using Helix.Core.Expressions;
 
-namespace Helix.Core.Initialisations
+namespace Helix.Core.Mutations
 {
-  [ContractClass(typeof (InitialiserStrategyContract))]
-  internal interface IInitialiserStrategy
+  /// <summary>Modifies a given individual to create a new one.</summary>
+  [ContractClass(typeof (MutationContract))]
+  public interface IMutation
   {
-    /// <summary>Creates a new expression tree from scratch.</summary>
-    /// <param name="maxDepth">
-    ///   The maximum allowed depth for expressions. Must be
-    ///   non-negative.
-    /// </param>
-    /// <returns>The newly generated expression tree.</returns>
-    ITree GenerateRandomExpressionTree(int maxDepth);
+    /// <summary>Modifies the given individual to create a new one.</summary>
+    /// <param name="tree">The individual to mutate.</param>
+    /// <returns>The new individual.</returns>
+    ITree Mutate(ITree tree);
   }
 
-  [ContractClassFor(typeof (IInitialiserStrategy))]
-  internal abstract class InitialiserStrategyContract : IInitialiserStrategy
+  [ContractClassFor(typeof (IMutation))]
+  internal abstract class MutationContract : IMutation
   {
-    #region IInitialiserStrategy Members
+    #region IMutation Members
 
-    ITree IInitialiserStrategy.GenerateRandomExpressionTree(int maxDepth)
+    ITree IMutation.Mutate(ITree tree)
     {
-      Contract.Requires<ArgumentOutOfRangeException>(maxDepth >= 0);
-
+      Contract.Requires<ArgumentNullException>(tree != null);
       Contract.Ensures(Contract.Result<ITree>() != null);
-      Contract.Ensures(Contract.Result<ITree>().Depth <= maxDepth);
 
       return default(ITree);
     }

@@ -25,37 +25,6 @@ namespace Helix.Core.Tests.Recombinations
   public class UniformSubtreeCrossoverTests
   {
     [TestMethod]
-    public void
-      UniformSubtreeCrossover_BreadFirstSearch_ReturnsElementFromSingleNodeTree()
-    {
-      var root = new Tree(new FakeTerminal());
-      var result = UniformSubtreeCrossover.BreadthFirstSearch(root, null, 0);
-
-      Assert.AreSame(root, result.Tree);
-      Assert.IsNull(result.Parent);
-    }
-
-    [TestMethod]
-    public void UniformSubtreeCrossover_BreadFirstSearch_ReturnsCorrectNode()
-    {
-      var root = new Tree(new FakeFunction(),
-        new ITree[]
-        {new Tree(new FakeTerminal(0)), new Tree(new FakeTerminal(1))});
-
-      var result = UniformSubtreeCrossover.BreadthFirstSearch(root, null, 0);
-      Assert.AreSame(root, result.Tree);
-      Assert.IsNull(result.Parent);
-
-      result = UniformSubtreeCrossover.BreadthFirstSearch(root, null, 1);
-      Assert.AreEqual(0, ((FakeTerminal) result.Tree.Node).Id);
-      Assert.AreSame(root, result.Parent);
-
-      result = UniformSubtreeCrossover.BreadthFirstSearch(root, null, 2);
-      Assert.AreEqual(1, ((FakeTerminal) result.Tree.Node).Id);
-      Assert.AreSame(root, result.Parent);
-    }
-
-    [TestMethod]
     public void UniformSubtreeCrossover_Recombine_MergesTwoTrees()
     {
       var firstTree = new Tree(new FakeFunction(),
