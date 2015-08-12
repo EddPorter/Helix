@@ -28,7 +28,7 @@ namespace Helix.Core.Tests.Recombinations
       TreeExtensions_BreadthFirstFindNode_ReturnsElementFromSingleNodeTree()
     {
       var root = new Tree(new FakeTerminal());
-      var result = TreeExtensions.BreadthFirstFindNode(root, null, 0);
+      var result = TreeExtensions.BreadthFirstFindNode(root, 0);
 
       Assert.AreSame(root, result.Tree);
       Assert.IsNull(result.Parent);
@@ -41,15 +41,15 @@ namespace Helix.Core.Tests.Recombinations
         new ITree[]
         {new Tree(new FakeTerminal(0)), new Tree(new FakeTerminal(1))});
 
-      var result = TreeExtensions.BreadthFirstFindNode(root, null, 0);
+      var result = TreeExtensions.BreadthFirstFindNode(root, 0);
       Assert.AreSame(root, result.Tree);
       Assert.IsNull(result.Parent);
 
-      result = TreeExtensions.BreadthFirstFindNode(root, null, 1);
+      result = TreeExtensions.BreadthFirstFindNode(root, 1);
       Assert.AreEqual(0, ((FakeTerminal) result.Tree.Node).Id);
       Assert.AreSame(root, result.Parent);
 
-      result = TreeExtensions.BreadthFirstFindNode(root, null, 2);
+      result = TreeExtensions.BreadthFirstFindNode(root, 2);
       Assert.AreEqual(1, ((FakeTerminal) result.Tree.Node).Id);
       Assert.AreSame(root, result.Parent);
     }

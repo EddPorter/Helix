@@ -14,6 +14,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using Helix.Common;
@@ -23,29 +24,45 @@ namespace Helix.Core.Expressions
 {
   internal static class TreeExtensions
   {
-    internal static TreeAndParent BreadthFirstFindNode(ITree tree, ITree parent,
+    internal static TreeAndParent BreadthFirstFindNode(this ITree tree,
       int nodeIndex)
     {
       Contract.Requires(tree != null);
       Contract.Requires(0 <= nodeIndex && nodeIndex < tree.Size);
 
+      return BreadthFirstVisitor(tree, _ => nodeIndex > 0,
+        currentNode => --nodeIndex);
+    }
+
+    internal static TreeAndParent BreadthFirstVisitor(this ITree tree,
+      Func<TreeAndParent, bool> continueFunc, Action<TreeAndParent> processNode)
+    {
       var queue = new Queue<TreeAndParent>();
 
-      queue.Enqueue(new TreeAndParent(tree, parent));
-      while (nodeIndex > 0)
+      queue.Enqueue(new TreeAndParent(tree, null));
+
+      while (queue.Count > 0)
       {
-        tree = queue.Dequeue().Tree;
-        if (tree.Node is IFunction)
+        var current = queue.Dequeue();
+        if (!continueFunc(current))
         {
-          foreach (var child in tree.Children)
+          return current;
+        }
+
+        // Perform function.
+        processNode(current);
+
+        // Queue children.
+        var currentTree = current.Tree;
+        if (currentTree.Node is IFunction)
+        {
+          foreach (var child in currentTree.Children)
           {
-            queue.Enqueue(new TreeAndParent(child, tree));
+            queue.Enqueue(new TreeAndParent(child, currentTree));
           }
         }
-        --nodeIndex;
       }
-
-      return queue.Dequeue();
+      return null;
     }
 
     internal static TreeAndParent PickPointInTree(this ITree tree,
@@ -58,7 +75,7 @@ namespace Helix.Core.Expressions
       distribution.ConfigureDistribution(0, tree.Size);
       var nodeIndex = (int) distribution.NextDouble();
 
-      return BreadthFirstFindNode(tree, null, nodeIndex);
+      return BreadthFirstFindNode(tree, nodeIndex);
     }
   }
 }

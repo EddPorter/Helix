@@ -33,7 +33,7 @@ namespace Helix.Core.Expressions
 
     /// <summary>The primitive element represented by the root node of this tree.</summary>
     [Pure]
-    IPrimitive Node { get; }
+    IPrimitive Node { get; set; }
 
     /// <summary>The number of nodes in the tree.</summary>
     [Pure]
@@ -66,8 +66,16 @@ namespace Helix.Core.Expressions
     {
       get
       {
-        Contract.Ensures(Contract.Result<IPrimitive>() != null);
         return default(IPrimitive);
+      }
+      set
+      {
+        // Can only swap a terminal for a terminal, or a function with a same arity function.
+        var node = ((ITree) this).Node;
+        Contract.Requires(node == null ||
+                          (node is ITerminal && value is ITerminal) ||
+                          (node is IFunction && value is IFunction &&
+                           ((IFunction) value).Arity == ((IFunction) node).Arity));
       }
     }
 

@@ -115,8 +115,7 @@ namespace Helix.Core.Expressions
     public int Depth { get; }
 
     /// <summary>The primitive element represented by the root node of this tree.</summary>
-    [Pure]
-    public IPrimitive Node { get; }
+    public IPrimitive Node { [Pure] get; set; }
 
     /// <summary>The number of nodes in the tree.</summary>
     [Pure]
