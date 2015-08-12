@@ -29,8 +29,7 @@ namespace Helix.Core.Tests.Mutations
   {
     [TestMethod]
     public void
-      HeadlessChickenCrossoverMutationTests_Mutate_ReplacesOneNodeTreeWithAnother
-      ()
+      HeadlessChickenCrossoverMutation_Mutate_ReplacesOneNodeTreeWithAnother()
     {
       var individual = new Tree(new FakeTerminal(1));
       ICollection<Type> terminalCollection = new List<Type>
@@ -51,8 +50,7 @@ namespace Helix.Core.Tests.Mutations
 
     [TestMethod]
     public void
-      HeadlessChickenCrossoverMutationTests_Mutate_ReplacesPointInTreeWithFullTree
-      ()
+      HeadlessChickenCrossoverMutation_Mutate_ReplacesPointInTreeWithFullTree()
     {
       var individual = new Tree(new FakeFunction(),
         new List<ITree>

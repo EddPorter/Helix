@@ -33,7 +33,10 @@ namespace Helix.Core.Initialisations
   /// </remarks>
   public class FullInitialiserStrategy : AbstractInitialiserStrategy
   {
+    /// <summary>A collection of the function types available for use.</summary>
     private readonly ICollection<Type> _functionCollection;
+
+    /// <summary>A collection of the terminal types available for use.</summary>
     private readonly ICollection<Type> _terminalCollection;
 
     /// <summary>Creates a new initialiser strategy using the full method.</summary>
